@@ -1,2 +1,2 @@
 # Predictive_Maintainance
-# contains Remaining Useful Life Prediction and Failure Prediction
+# Contains Remaining Useful Life Prediction and Failure Prediction
