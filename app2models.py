@@ -419,9 +419,9 @@ if st.button('Train and Predict using Support Vector Regression Model'):
     st.pyplot(fig)
     
     
-# --------------------------------------- XGBoost Regression --------------------------------------- #            
+# --------------------------------------- XGBoost Regression (XGB) --------------------------------------- #            
 
-# Function to process data for Random Forest
+# Function to process data for XGBoost
 def process_data_for_xgb(df_train, df_test):
     # data processing code here
     # call the 'process_data_for_regression' function as it seems suitable
@@ -453,7 +453,7 @@ if page_selection == "XGBoost Regression":
     y_val = val_df['RUL']
 
     # Slider Inputs for Custom Prediction
-    st.sidebar.header("Custom Prediction Inputs (RF)")
+    st.sidebar.header("Custom Prediction Inputs (XGB)")
     st.sidebar.write("Adjust the sliders based on input data:")
     setting_min = float(df_train['setting_1'].min())
     setting_max = float(df_train['setting_1'].max()) + 0.01 if setting_min == float(df_train['setting_1'].max()) else float(df_train['setting_1'].max())
@@ -467,7 +467,7 @@ if page_selection == "XGBoost Regression":
         sensor_max = sensor_min + 0.01 if sensor_min == float(df_train[f's_{i}'].max()) else float(df_train[f's_{i}'].max())
         sensors[f's_{i}'] = st.sidebar.slider(f'Sensor {i}', sensor_min, sensor_max)
 
-    # Train and Predict using Random Forest
+    # Train and Predict using XGBoost
     
 st.write("### XGBoost Regressor Model Training")
 
@@ -504,12 +504,12 @@ if st.button('Train and Predict using XGBoost'):
     st.pyplot(fig)
 # Bar plot for actual vs predicted RUL for validation data
 
-    # Custom Prediction using RF model
-    if st.sidebar.button('Predict RUL using Custom Input (RF)'):
-        if 'best_rf_reg' in locals():
+    # Custom Prediction using XGB model
+    if st.sidebar.button('Predict RUL using Custom Input (XGB)'):
+        if 'XGB_reg' in locals():
             custom_input_data = [[setting_1, setting_2, setting_3] + list(sensors.values())]
-            custom_prediction = best_rf_reg.predict(custom_input_data)
-            st.sidebar.write(f"Predicted RUL (RF): {custom_prediction[0]:.2f}")
+            custom_prediction = XGB_reg.predict(custom_input_data)
+            st.sidebar.write(f"Predicted RUL (XGB): {custom_prediction[0]:.2f}")
  
 # --------------------------------------- Long Short Term Memory (LSTM) --------------------------------------- #
           
@@ -518,6 +518,29 @@ if page_selection == "LSTM Regression":
     st.write(df_train.head())
     st.write(f"Number of Rows in Training Data: {df_train.shape[0]}")
     st.write(f"Number of Columns in Training Data: {df_train.shape[1]}")
+    
+ # Slider Inputs
+    st.sidebar.header("Custom Prediction Inputs (LSTM)")
+    st.sidebar.write("Adjust the sliders based on input data:")
+
+    setting_min = float(df_train['setting_1'].min())
+    setting_max = float(df_train['setting_1'].max()) + 0.01 if setting_min == float(df_train['setting_1'].max()) else float(df_train['setting_1'].max())
+    setting_1 = st.sidebar.slider('Setting 1', setting_min, setting_max)
+    setting_2 = st.sidebar.slider('Setting 2', setting_min, setting_max)
+    setting_3 = st.sidebar.slider('Setting 3', setting_min, setting_max)
+
+    sensors = {}
+    for i in range(1, 22):
+        sensor_min = float(df_train[f's_{i}'].min())
+        sensor_max = sensor_min + 0.01 if sensor_min == float(df_train[f's_{i}'].max()) else float(df_train[f's_{i}'].max())
+        sensors[f's_{i}'] = st.sidebar.slider(f'Sensor {i}', sensor_min, sensor_max)
+
+    if st.sidebar.button('Predict RUL using Custom Input (LR)'):
+        if 'lr_model' in globals():
+            custom_input_data = [[setting_1, setting_2, setting_3] + list(sensors.values())]
+            custom_scaled_input = scaler.transform(custom_input_data)
+            custom_prediction = lr_model.predict(custom_scaled_input)
+            st.sidebar.write(f"Predicted RUL (LR): {custom_prediction[0]:.2f}")
     
 st.write("### Long Short Term Memory Model Training")
 
@@ -594,6 +617,29 @@ if page_selection == "Dense Neural Network":
     st.write(df_train.head())
     st.write(f"Number of Rows in Training Data: {df_train.shape[0]}")
     st.write(f"Number of Columns in Training Data: {df_train.shape[1]}")
+    
+ # Slider Inputs
+    st.sidebar.header("Custom Prediction Inputs (DNN)")
+    st.sidebar.write("Adjust the sliders based on input data:")
+
+    setting_min = float(df_train['setting_1'].min())
+    setting_max = float(df_train['setting_1'].max()) + 0.01 if setting_min == float(df_train['setting_1'].max()) else float(df_train['setting_1'].max())
+    setting_1 = st.sidebar.slider('Setting 1', setting_min, setting_max)
+    setting_2 = st.sidebar.slider('Setting 2', setting_min, setting_max)
+    setting_3 = st.sidebar.slider('Setting 3', setting_min, setting_max)
+
+    sensors = {}
+    for i in range(1, 22):
+        sensor_min = float(df_train[f's_{i}'].min())
+        sensor_max = sensor_min + 0.01 if sensor_min == float(df_train[f's_{i}'].max()) else float(df_train[f's_{i}'].max())
+        sensors[f's_{i}'] = st.sidebar.slider(f'Sensor {i}', sensor_min, sensor_max)
+
+    if st.sidebar.button('Predict RUL using Custom Input (LR)'):
+        if 'lr_model' in globals():
+            custom_input_data = [[setting_1, setting_2, setting_3] + list(sensors.values())]
+            custom_scaled_input = scaler.transform(custom_input_data)
+            custom_prediction = lr_model.predict(custom_scaled_input)
+            st.sidebar.write(f"Predicted RUL (LR): {custom_prediction[0]:.2f}")
     
 st.write("### Dense Neural Network Model Training")
 
