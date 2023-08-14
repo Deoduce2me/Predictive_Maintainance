@@ -46,8 +46,15 @@ def process_data_for_regression(df):
 
 # --------------------------------------- STREAMLIT APP START --------------------------------------- #
 
+# Main title
 st.title("Predictive Maintenance Dataset Explorer and Predictor")
 
+# Subtitle and details
+st.write("### NASA Turbofan Jet Engine Data Set")
+st.write("Run to Failure Degradation Simulation")
+
+st.write("### Prediction Goal")
+st.write("In this dataset, the goal is to predict the remaining useful life (RUL) of each engine in the test dataset. RUL is the equivalent of the number of flights remaining for the engine after the last datapoint in the test dataset.")
 uploaded_file = st.sidebar.file_uploader("Upload your training dataset (CSV file)", type="csv")
 
 if uploaded_file:
